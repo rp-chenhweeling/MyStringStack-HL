@@ -24,7 +24,7 @@ public class MyStringStack {
 	}
 	
 	public void clear(){
-		v = new ArrayList<String> ();		
+		v = new ArrayList<String> ();
 	}
 
 	public static void main(String[] args) {

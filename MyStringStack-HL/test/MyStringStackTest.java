@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class MyStringStackTest {
 
-	private String s1,s2;
+	private String s1,s2, o1, o2;
 	private MyStringStack stack;
 	
 	@Before
@@ -21,12 +21,6 @@ public class MyStringStackTest {
 	
 	@Test
 	public void testPush(){
-		//Empty stack is still empty after pushing a null element 
-		assertTrue(stack.isEmpty());
-		String o1 = null;
-		stack.push(o1);
-		assertTrue(stack.isEmpty());
-		
 		//New stack is empty, after pushing an s1 element, stack is no longer empty
 		assertTrue(stack.isEmpty());
 		stack.push(s1);
@@ -34,34 +28,50 @@ public class MyStringStackTest {
 		
 		//HL Demo: After pushing an element s2, pop will retrieve s2
 		//pop() must be implemented for this to work
-		//stack.push(s2);
-		//String o2 = Null;
-		//o2 = stack.pop();
-		//assertSame (s2,o2);
-		
+		stack.push(s2);
+		String o2 = null;
+		o2 = stack.pop();
+		assertSame (s2,o2);
+
+		//Empty stack is still empty after pushing a null element 
+		stack.clear();
+		assertTrue(stack.isEmpty());
+		String o1 = null;
+		stack.push(o1);
+		assertTrue(stack.isEmpty());
 	}
 	
 	@Test
 	public void testPop(){
-		//HL: Popping from empty stack must generate exception
-		String o1 = null;
-		assertTrue("Initial Stack state: ",stack.isEmpty());
-		try {
-			o1= stack.pop();
-			fail();			
-		}catch (IndexOutOfBoundsException e) {}		
-		
-		//HL: Pushed an element, stack is not empty, popping does not cause exception
+		//HL: Pushed an element, stack is not empty, Popped element same as last pushed element
 		stack.push(s1);
 		assertFalse("Stack should not be empty after push", stack.isEmpty());
 		try {
 			o1= stack.pop();			
 		}catch (IndexOutOfBoundsException e) {
-			fail();
+			fail();	//test fail if pop() cause exception
 		}
-		//HL: Popped element is the same as last pushed element
 		assertSame (s1,o1);
 		assertTrue(stack.isEmpty());
+
+		//HL: Pop from empty stack must throw exception
+		String o1 = null;
+		assertTrue("Initial Stack state: ",stack.isEmpty());
+		try {
+			o1= stack.pop();
+			fail();			
+		}catch (IndexOutOfBoundsException e) {}
+		
+		//HL: Pushed a few elements, pop element is same as last pushed element
+		stack.push(s1);
+		stack.push(s2);
+		assertFalse("Stack should not be empty after push", stack.isEmpty());
+		try {
+			o2= stack.pop();			
+		}catch (IndexOutOfBoundsException e) {
+			fail();
+		}
+		assertSame (s2,o2);
 	}	
 	
 	@Test
@@ -73,6 +83,7 @@ public class MyStringStackTest {
 		assertFalse(stack.isEmpty());
 		
 		//HL: pop last pushed element from stack; stack becomes empty;
+		//HL: Since stack is not empt, test failed if pop() throws exception
 		try{
 			s3 = stack.pop();
 		}catch (IndexOutOfBoundsException e){
@@ -90,9 +101,12 @@ public class MyStringStackTest {
 		stack.push(s1);
 		stack.push(s2);
 		assertFalse("stack should not be empty",stack.isEmpty());
+
 		//HL: Clear the stack; stack is empty
 		stack.clear();
 		assertTrue(stack.isEmpty());
+
+		//HL: Since stack is empty, test failed if pop() does not throw exception
 		try{
 			o1= stack.pop();
 			fail();			
